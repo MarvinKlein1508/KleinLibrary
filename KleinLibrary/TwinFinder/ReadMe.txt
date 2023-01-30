@@ -1,0 +1,1 @@
+﻿TwinFinder darf nicht aus WK5.Core entnommen werden, da ansonsten die WK5 nicht mehr korrekt funktioniert.
