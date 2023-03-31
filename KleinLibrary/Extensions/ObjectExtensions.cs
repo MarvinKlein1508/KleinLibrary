@@ -4,6 +4,7 @@ using System.Collections;
 using System.Data;
 using System.Diagnostics;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace KleinLibrary.Erweiterungen
@@ -234,6 +235,12 @@ namespace KleinLibrary.Erweiterungen
                 bool foundOneMatching = false;
                 foreach (var modItem in vergleichEnumerable)
                 {
+                    // Check for different types to support base abstraction
+                    if (modItem.GetType() != item.GetType())
+                    {
+                        continue;
+                    }
+
                     if (!item.HasBeenModified(modItem, true))
                     {
                         foundOneMatching = true;
@@ -279,13 +286,6 @@ namespace KleinLibrary.Erweiterungen
             {
                 foreach (PropertyInfo prop in original.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
                 {
-#if DEBUG
-                    if (prop.Name.StartsWith("Notiz"))
-                    {
-
-                    }
-#endif
-
                     var attribute = prop.GetCustomAttribute<IgnoreModificationCheckAttribute>();
                     if (attribute != null)
                     {
